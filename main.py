@@ -14,11 +14,12 @@ def parse_args():
         '--file',
         required=True,
         nargs='+',
-        help='Путь к лог файлу.'
+        help='Путь к лог файлу(файлам).'
     )
     parser.add_argument(
         '-r',
         '--report',
+        required=True,
         choices=['average', ],
         default='average',
         help='Тип отчета (по умолчанию: average)'
@@ -51,7 +52,11 @@ def print_report(headers, table_data):
 
 
 def average_report(log_data):
-    report = defaultdict(lambda: {'total': 0, 'sum_time': 0.0, 'avg_time': 0.0})
+    report = defaultdict(lambda: {
+        'total': 0,
+        'sum_time': 0.0,
+        'avg_time': 0.0
+    })
     for row in log_data:
         url = row['url']
         report[url]['total'] += 1
@@ -61,7 +66,11 @@ def average_report(log_data):
             3
         )
     headers = ['handler', 'total', 'avg_response_time']
-    table = [(url, report[url]['total'], report[url]['avg_time']) for url in report]
+    table = [(
+        url,
+        report[url]['total'],
+        report[url]['avg_time']
+    ) for url in report]
 
     print_report(headers, table)
 
