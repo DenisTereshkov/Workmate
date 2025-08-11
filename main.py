@@ -13,6 +13,7 @@ def parse_args():
         '-f',
         '--file',
         required=True,
+        nargs='+',
         help='Путь к лог файлу.'
     )
     parser.add_argument(
@@ -66,8 +67,11 @@ def average_report(log_data):
 
 
 def main():
+    all_logs_data = []
     args = parse_args()
-    log_data = parse_log_file(args.file)
+    for file_path in args.file:
+        log_data = parse_log_file(file_path)
+        all_logs_data.extend(log_data)
     generate_report(log_data, args.report)
 
 
