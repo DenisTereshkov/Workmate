@@ -27,11 +27,12 @@ def parse_args():
     return parser.parse_args()
 
 
-def parse_log_file(file_path):
+def parse_log_file(file_paths):
     log_data = []
-    with open(file_path, 'r') as f:
-        for row in f:
-            log_data.append(json.loads(row))
+    for path in file_paths:
+        with open(path, 'r') as f:
+            for row in f:
+                log_data.append(json.loads(row))
     return log_data
 
 
@@ -76,11 +77,8 @@ def average_report(log_data):
 
 
 def main():
-    all_logs_data = []
     args = parse_args()
-    for file_path in args.file:
-        log_data = parse_log_file(file_path)
-        all_logs_data.extend(log_data)
+    log_data = parse_log_file(args.file)
     generate_report(log_data, args.report)
 
 
