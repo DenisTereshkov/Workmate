@@ -40,6 +40,17 @@ def test_average_report():
     assert ('/test', 2, 0.3) in table
 
 
+def test_damaged_logs_average_report():
+    test_data = [
+        {'url': '/damaged'},
+        {'url': '/damaged', 'response_time': '0.4'},
+        {'response_time': 0.4},
+        {'url': '/test', 'response_time': 0.4}
+    ]
+    headers, table = average_report(test_data)
+    assert ('/test', 1, 0.4) in table
+
+
 def test_wrong_report_type():
     with pytest.raises(ValueError):
         generate_report([], 'wrong_type')

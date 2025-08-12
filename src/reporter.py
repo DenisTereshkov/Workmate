@@ -59,14 +59,31 @@ def average_report(log_data):
         'sum_time': 0.0,
         'avg_time': 0.0
     })
+    error_count = 0
     for row in log_data:
-        url = row['url']
-        report[url]['total'] += 1
-        report[url]['sum_time'] += row['response_time']
-        report[url]['avg_time'] = round(
-            report[url]['sum_time'] / report[url]['total'],
-            3
-        )
+        try:
+            if 'url' not in row or 'response_time' not in row:
+                raise KeyError('Отсутствует обязательное поле')
+            url = row['url']
+            response_time = row['response_time']
+            if not url:
+                raise ValueError('URL не может быть пустым')
+            if not isinstance(response_time, float) or response_time < 0:
+                raise ValueError(
+                    'Время ответа дожно быть неотрицательным числом'
+                )
+            report[url]['total'] += 1
+            report[url]['sum_time'] += response_time
+            report[url]['avg_time'] = round(
+                report[url]['sum_time'] / report[url]['total'],
+                3
+            )
+        except Exception:
+            error_count += 1
+            continue
+    if error_count > 0:
+        total = len(log_data)
+        print(f'Строки в которых нашлись ошибки: {error_count}/{total}')
     headers = ['handler', 'total', 'avg_response_time']
     table = [(
         url,
