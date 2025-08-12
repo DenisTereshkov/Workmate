@@ -6,6 +6,7 @@ from tabulate import tabulate
 
 
 def parse_args():
+    """Парсит аргументы командной строки."""
     parser = argparse.ArgumentParser(
         description='Читает лог файд и генерирует отчет.'
     )
@@ -27,6 +28,7 @@ def parse_args():
 
 
 def parse_log_file(file_paths):
+    """Читает и собирает лог-файлы в список словарей."""
     log_data = []
     for path in file_paths:
         with open(path, 'r') as f:
@@ -38,6 +40,7 @@ def parse_log_file(file_paths):
 
 
 def generate_report(log_data, report_type):
+    """Генерирует отчет указанного типа."""
     if report_type == 'average':
         return average_report(log_data)
     else:
@@ -45,6 +48,7 @@ def generate_report(log_data, report_type):
 
 
 def print_report(headers, table_data):
+    """Выводит отчет в табличном формате."""
     print(tabulate(
         table_data,
         headers=headers,
@@ -54,6 +58,7 @@ def print_report(headers, table_data):
 
 
 def average_report(log_data):
+    """Генерирует отчет со средним временем ответа по URL."""
     report = defaultdict(lambda: {
         'total': 0,
         'sum_time': 0.0,
