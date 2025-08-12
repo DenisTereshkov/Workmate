@@ -32,6 +32,8 @@ def parse_log_file(file_paths):
         with open(path, 'r') as f:
             for row in f:
                 log_data.append(json.loads(row))
+    if not log_data:
+        raise ValueError('Лог файл пуст. Проверьте содержимое.')
     return log_data
 
 

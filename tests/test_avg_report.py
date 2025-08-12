@@ -16,6 +16,13 @@ def test_parse_log_file(tmp_path):
     assert logs[0]['response_time'] == 0.5
 
 
+def test_parse_empty_log_file(tmp_path):
+    test_file = tmp_path / 'empty.log'
+    test_file.write_text('')
+    with pytest.raises(ValueError):
+        parse_log_file([str(test_file)])
+
+
 def test_generate_report():
     test_data = [{'url': '/test', 'response_time': 0.2}]
     headers, table = generate_report(test_data, 'average')
