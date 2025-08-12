@@ -21,7 +21,6 @@ def parse_args():
         '--report',
         required=True,
         choices=['average', ],
-        default='average',
         help='Тип отчета (по умолчанию: average)'
     )
     return parser.parse_args()
@@ -72,5 +71,4 @@ def average_report(log_data):
         report[url]['total'],
         report[url]['avg_time']
     ) for url in report]
-
-    print_report(headers, table)
+    return headers, table
